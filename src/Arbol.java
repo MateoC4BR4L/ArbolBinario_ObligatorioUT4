@@ -214,32 +214,66 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
     public boolean vacio() { return (this.raiz == null); }
 
     @Override
-    public void inorden() {
-
+    public void inorden()
+    {
+        if(vacio())
+        {
+            System.out.print("Arbol vacío.");
+            return;
+        }
+        inorden(raiz);
     }
 
     @Override
-    public void preorden() {
-
+    public void preorden()
+    {
+        if(vacio())
+        {
+            System.out.print("Arbol vacío.");
+            return;
+        }
+        preorden(raiz);
     }
 
     @Override
-    public void postorden() {
-
+    public void postorden()
+    {
+        if(vacio())
+        {
+            System.out.print("Arbol vacío.");
+            return;
+        }
+        postorden(raiz);
     }
 
     @Override
-    public void inorden(Nodo<T> nodo) {
-
+    public void inorden(Nodo<T> nodo)
+    {
+        if (nodo != null)
+        {
+            inorden(nodo.getHijo_Izq());
+            System.out.println(nodo.getValor());
+            inorden(nodo.getHijo_Der());
+        }
     }
 
     @Override
-    public void preorden(Nodo<T> nodo) {
-
+    public void preorden(Nodo<T> nodo)
+    {
+        if (nodo != null) {
+            System.out.println(nodo.getValor());
+            preorden(nodo.getHijo_Izq());
+            preorden(nodo.getHijo_Der());
+        }
     }
 
     @Override
-    public void postorden(Nodo<T> nodo) {
-
+    public void postorden(Nodo<T> nodo)
+    {
+        if (nodo != null) {
+            postorden(nodo.getHijo_Izq());
+            postorden(nodo.getHijo_Der());
+            System.out.println(nodo.getValor());
+        }
     }
 }
