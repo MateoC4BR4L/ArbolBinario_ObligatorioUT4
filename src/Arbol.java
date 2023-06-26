@@ -149,12 +149,54 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
     }
 
     @Override
-    public T claveAnterior(T valor, Nodo<T> nodo) {
-        return null;
+    public T claveAnterior(T valor, Nodo<T> nodo)
+    {
+        if(valor.equals(raiz.getValor()))
+        {
+            System.out.println("El valor ingresado no tiene clave anterior debido a que este valor es la raiz.");
+            return null;
+        }
+
+        if(valor.compareTo(nodo.getValor()) < 0)
+        {
+            if(nodo.getHijo_Izq() != null)
+            {
+                if (valor.equals(nodo.getHijo_Izq().getValor()))
+                    return nodo.getValor();
+                return claveAnterior(valor, nodo.getHijo_Izq());
+            }
+            else
+            {
+                System.out.print("El elemento que usted ingresó no existe.");
+                return null;
+            }
+        }
+        else
+        {
+            if(nodo.getHijo_Der() != null)
+            {
+                if(valor.equals(nodo.getHijo_Der().getValor()))
+                    return nodo.getValor();
+                return claveAnterior(valor, nodo.getHijo_Der());
+
+            }
+            else
+            {
+                System.out.print("El elemento que usted ingresó no existe.");
+                return null;
+            }
+        }
     }
 
     @Override
-    public T claveAnterior(T valor) { return null;
+    public T claveAnterior(T valor)
+    {
+        if(vacio())
+        {
+            System.out.println("El arbol está vacío");
+            return null;
+        }
+        return claveAnterior(valor, raiz);
     }
 
 
