@@ -17,6 +17,11 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
     @Override
     public boolean insertar(Nodo<T> padre, T valor)
     {
+        if(valor.equals(padre.getValor()))
+        {
+            System.out.println("El valor ingresado ya existe.");
+            return false;
+        }
         // Si el valor dado es menor al valor del padre, se mueve a la izquierda del arbol
         if(valor.compareTo(padre.getValor()) < 0)
         {
@@ -28,35 +33,33 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
             }
             else
             {
-                insertar(padre.getHijo_Izq(), valor);
+                return insertar(padre.getHijo_Izq(), valor);
             }
         }
         // Si el valor dado es mayor al valor del padre, se mueve a la derecha del arbol
-        else if(valor.compareTo(padre.getValor()) > 0)
+        else
         {
             if (padre.getHijo_Der() == null) {
                 padre.setHijo_Der(new Nodo<>(valor));
                 return true;
             } else {
-                insertar(padre.getHijo_Izq(), valor);
+                return insertar(padre.getHijo_Der(), valor);
             }
         }
-        // Si se llega a esta parte del programa se debe a que el valor ya existe
-        System.out.println("El valor que se quiere ingresar ya existe.");
-        return false;
     }
 
     // Llama a la otra funcion insertar para lograr la llamada recursiva
     @Override
-    public void insertar(T valor)
+    public boolean insertar(T valor)
     {
         if(vacio())
         {
             this.raiz = new Nodo<>(valor);
+            return true;
         }
         else
         {
-            insertar(this.raiz, valor);
+            return insertar(this.raiz, valor);
         }
     }
 
@@ -71,7 +74,7 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
         {
             if(nodo.getHijo_Izq() != null)
             {
-                buscar(valor, nodo.getHijo_Izq());
+                return buscar(valor, nodo.getHijo_Izq());
             }
             else
             {
@@ -79,11 +82,11 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
                 return null;
             }
         }
-        else if(valor.compareTo(nodo.getValor()) > 0)
+        else
         {
             if(nodo.getHijo_Der() != null)
             {
-                buscar(valor, nodo.getHijo_Der());
+                return buscar(valor, nodo.getHijo_Der());
             }
             else
             {
@@ -91,20 +94,16 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
                 return null;
             }
         }
-        // En caso de que no exista va a
-        System.out.println("El nodo indicado no existe.");
-        return null;
     }
 
-    public void buscar(T valor)
+    public Nodo<T> buscar(T valor)
     {
         if(vacio())
         {
             System.out.println("El arbol esta vacio.");
-            return;
+            return null;
         }
-        buscar(valor, raiz);
-
+        return buscar(valor, raiz);
     }
 
     // Obtener la menor clave del arbol
@@ -112,36 +111,41 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
     public T menorClave(Nodo<T> nodo)
     {
         if(nodo.getHijo_Izq() == null)
-        {
             return nodo.getValor();
-        }
-        else
-        {
-            menorClave(nodo.getHijo_Izq());
-        }
-        // No debería de llegar hasta este return el programa...
-        return null;
+
+        return menorClave(nodo.getHijo_Izq());
     }
 
     @Override
-    public void menorClave()
+    public T menorClave()
     {
         if(vacio())
         {
             System.out.println("El arbol está vacío");
-            return;
+            return null;
         }
-        menorClave(raiz);
+        return menorClave(raiz);
     }
 
     @Override
-    public T mayorClave(Nodo<T> nodo) {
-        return null;
+    public T mayorClave(Nodo<T> nodo)
+    {
+        if(nodo.getHijo_Der() == null)
+            return nodo.getValor();
+
+        return mayorClave(nodo.getHijo_Der());
     }
 
     // Obtener la mayor clave del arbol
     @Override
-    public void mayorClave(){
+    public T mayorClave()
+    {
+        if(vacio())
+        {
+            System.out.println("El arbol está vacío");
+            return null;
+        }
+        return mayorClave(raiz);
     }
 
     @Override
@@ -150,7 +154,7 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
     }
 
     @Override
-    public void claveAnterior(T valor) {
+    public T claveAnterior(T valor) { return null;
     }
 
 

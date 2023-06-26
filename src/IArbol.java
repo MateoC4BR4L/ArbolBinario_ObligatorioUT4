@@ -7,31 +7,31 @@ public interface IArbol <T extends Comparable<T>>
     public boolean insertar(Nodo<T> padre, T valor);
 
     // Metodo que llama a la otra funcion insertar para hacer la llamada recursiva
-    public void insertar(T valor);
+    public boolean insertar(T valor);
 
     // Funcion para buscar un nodo en el arbol
     public Nodo<T> buscar(T valor, Nodo<T> nodo);
 
     // Llama a la funcion buscar
-    public void buscar(T valor);
+    public Nodo<T> buscar(T valor);
 
     // Obtener la menor clave del arbol
     public T menorClave(Nodo<T> nodo);
 
+    // Llama al metodo para obtener la menor clave del arbol
+    public T menorClave();
+
     // Obtener la mayor clave del arbol
     public T mayorClave(Nodo<T> nodo);
 
+    // Llama al metodo para obtener la mayor clave del arbol
+    public T mayorClave();
+
+    // Llama al metodo para obtener la clave anterior a una clave dada
+    public T claveAnterior(T valor);
+
     // Obtener la clave anterior a una clave dada
     public T claveAnterior(T valor, Nodo<T> nodo);
-
-    // Obtener la menor clave del arbol
-    public void menorClave();
-
-    // Obtener la mayor clave del arbol
-    public void mayorClave();
-
-    // Obtener la clave anterior a una clave dada
-    public void claveAnterior(T valor);
 
     // Obtener la cantidad de nodos en un nivel
     public int nodos_por_Nivel(int nivel);
