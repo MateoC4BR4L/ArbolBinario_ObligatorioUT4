@@ -1,3 +1,9 @@
+import javax.swing.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
 public class Arbol<T extends Comparable<T>> implements IArbol<T>
 {
     // Nodo raiz del arbol, padre de todos los nodos
@@ -9,8 +15,29 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
     }
 
     @Override
-    public boolean esArbolBB(){
-        return false;
+    public boolean esArbolBB(Nodo<T> nodo)
+    {
+        List<T> lista = this.listaInorden();
+
+        for(int i = 0; i < lista.size() - 1; i++)
+        {
+            if(lista.get(i).compareTo(lista.get(i + 1)) > 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean esArbolBB()
+    {
+        if(vacio())
+        {
+            System.out.println("El arbol está vacío, por lo que no se puede verificar si es de búsqueda");
+            return false;
+        }
+        return esArbolBB(raiz);
     }
 
     // Insertar un Nodo en el arbol de busqueda
@@ -202,8 +229,35 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
 
     // Obtener la cantidad de nodos de un nivel determinado
     @Override
-    public int nodos_por_Nivel(int nivel) {
-        return 0;
+    public int nodos_por_Nivel(int nivel)
+    {
+        if(nivel == 0)
+            return 1;
+
+        int lvl = 0;
+        int contador = 0;
+        Nodo<T> actual = null;
+
+        Queue<Nodo<T>> cola = new ArrayDeque<Nodo<T>>();
+        cola.add(raiz);
+
+        while(!cola.isEmpty())
+        {
+            int largo = cola.size();
+            for (int i = 0; i <= largo - 1; i++)
+            {
+                if(lvl == nivel)
+                    contador += 1;
+
+                actual = cola.poll();
+                if(actual.getHijo_Izq() != null)
+                    cola.offer(actual.getHijo_Izq());
+                if(actual.getHijo_Der() != null)
+                    cola.offer(actual.getHijo_Der());
+            }
+            lvl++;
+        }
+        return contador;
     }
 
     // Obtener las hojas del arbol con sus respectivos niveles
@@ -275,5 +329,29 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
             postorden(nodo.getHijo_Der());
             System.out.println(nodo.getValor());
         }
+    }
+
+    @Override
+    public List<T> listaInorden()
+    {
+        if(vacio())
+        {
+            System.out.print("Arbol vacío.");
+            return null;
+        }
+        List<T> lista = new ArrayList<>();
+        return listaInorden(raiz, lista);
+    }
+
+    @Override
+    public List<T> listaInorden(Nodo<T> nodo, List<T> lista)
+    {
+        if (nodo != null)
+        {
+            listaInorden(nodo.getHijo_Izq(), lista);
+            lista.add(nodo.getValor());
+            listaInorden(nodo.getHijo_Der(), lista);
+        }
+        return lista;
     }
 }

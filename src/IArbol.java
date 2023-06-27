@@ -1,5 +1,10 @@
+import java.util.List;
+
 public interface IArbol <T extends Comparable<T>>
 {
+    // Funcion que verifica si el arbol es de busqueda
+    public boolean esArbolBB(Nodo<T> nodo);
+
     // Funcion que verifica si el arbol es de busqueda
     public boolean esArbolBB();
 
@@ -59,4 +64,10 @@ public interface IArbol <T extends Comparable<T>>
 
     // Imprime el arbol de forma postorden
     public void postorden(Nodo<T> nodo);
+
+    // Obtener una lista de los valores del arbol en forma inorden
+    public List<T> listaInorden();
+
+    // LLama a listaInorden
+    public List<T> listaInorden(Nodo<T> nodo, List<T> lista);
 }
