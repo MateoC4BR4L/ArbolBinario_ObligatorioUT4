@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public interface IArbol <T extends Comparable<T>>
 {
@@ -42,7 +44,7 @@ public interface IArbol <T extends Comparable<T>>
     public int nodos_por_Nivel(int nivel);
 
     // Listar todas las hojas con su nivel
-    public void hojas();
+    public Map<Nodo<T>, Integer> hojas();
 
     // Verifica si el arbol esta vacio
     public boolean vacio();

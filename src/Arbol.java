@@ -1,8 +1,5 @@
 import javax.swing.*;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Arbol<T extends Comparable<T>> implements IArbol<T>
 {
@@ -250,6 +247,8 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
                     contador += 1;
 
                 actual = cola.poll();
+                assert actual != null;
+
                 if(actual.getHijo_Izq() != null)
                     cola.offer(actual.getHijo_Izq());
                 if(actual.getHijo_Der() != null)
@@ -260,9 +259,43 @@ public class Arbol<T extends Comparable<T>> implements IArbol<T>
         return contador;
     }
 
-    // Obtener las hojas del arbol con sus respectivos niveles
     @Override
-    public void hojas() {}
+    public Map<Nodo<T>, Integer> hojas()
+    {
+        if (vacio())
+        {
+            System.out.println("El árbol está vacío.");
+            return null;
+        }
+
+        Map<Nodo<T>, Integer> diccionario_Hojas = new HashMap<>();
+
+        int lvl = 0;
+        Nodo<T> actual = null;
+
+        Queue<Nodo<T>> cola = new ArrayDeque<Nodo<T>>();
+        cola.add(raiz);
+
+        while (!cola.isEmpty())
+        {
+            int largo = cola.size();
+            for (int i = 0; i < largo; i++)
+            {
+                actual = cola.poll();
+                assert actual != null;
+                if (actual.getHijo_Izq() == null && actual.getHijo_Der() == null)
+                {
+                    diccionario_Hojas.put(actual, lvl);
+                }
+                if (actual.getHijo_Izq() != null)
+                    cola.offer(actual.getHijo_Izq());
+                if (actual.getHijo_Der() != null)
+                    cola.offer(actual.getHijo_Der());
+            }
+            lvl++;
+        }
+        return diccionario_Hojas;
+    }
 
     @Override
     public boolean vacio() { return (this.raiz == null); }
